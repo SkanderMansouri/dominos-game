@@ -1,0 +1,22 @@
+{
+   "name": "blockchain-project",
+   "version": "1.0.0",
+   "description": "domino game on the blockchain",
+   "main": "./test/dominoes.js",
+   "scripts": {
+      "start": "node ./test/dominoes.js"
+   },
+   "keywords": [
+      "blockchain"
+   ],
+   "author": "team4",
+   "license": "ISC",
+   "dependencies": {
+      "chalk": "^2.4.2",
+      "double-ended-queue": "^2.1.0-0",
+      "fs": "0.0.1-security",
+      "readline-sync": "^1.4.9",
+      "web3": "^1.0.0-beta.55"
+   },
+   "devDependencies": {}
+}
