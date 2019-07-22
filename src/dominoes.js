@@ -1,7 +1,4 @@
 
-var jsonFile = "./build/contracts/DominoGame.json";
-var parsed = JSON.parse(fs.readFileSync(jsonFile));
-
 var tileWidth = 50;
 var tileHeight = 100;
 
@@ -43,8 +40,253 @@ var scoreprompt = document.getElementById("scoreprompt");
 var side_left = document.getElementById("side_left");
 var side_right = document.getElementById("side_right");
 
-var web3 = new Web3(new Web3.providers.HttpProvider('http://localhost:7545'));
-var contract = new web3.eth.Contract(abi, '0xCC624b40F53Bac6A12D74daBc176736fc0a976fE');
+var abi = "[\n" +
+    "    {\n" +
+    "      \"constant\": true,\n" +
+    "      \"inputs\": [],\n" +
+    "      \"name\": \"player4\",\n" +
+    "      \"outputs\": [\n" +
+    "        {\n" +
+    "          \"name\": \"\",\n" +
+    "          \"type\": \"address\"\n" +
+    "        }\n" +
+    "      ],\n" +
+    "      \"payable\": false,\n" +
+    "      \"stateMutability\": \"view\",\n" +
+    "      \"type\": \"function\"\n" +
+    "    },\n" +
+    "    {\n" +
+    "      \"constant\": true,\n" +
+    "      \"inputs\": [],\n" +
+    "      \"name\": \"player3\",\n" +
+    "      \"outputs\": [\n" +
+    "        {\n" +
+    "          \"name\": \"\",\n" +
+    "          \"type\": \"address\"\n" +
+    "        }\n" +
+    "      ],\n" +
+    "      \"payable\": false,\n" +
+    "      \"stateMutability\": \"view\",\n" +
+    "      \"type\": \"function\"\n" +
+    "    },\n" +
+    "    {\n" +
+    "      \"constant\": true,\n" +
+    "      \"inputs\": [],\n" +
+    "      \"name\": \"player2\",\n" +
+    "      \"outputs\": [\n" +
+    "        {\n" +
+    "          \"name\": \"\",\n" +
+    "          \"type\": \"address\"\n" +
+    "        }\n" +
+    "      ],\n" +
+    "      \"payable\": false,\n" +
+    "      \"stateMutability\": \"view\",\n" +
+    "      \"type\": \"function\"\n" +
+    "    },\n" +
+    "    {\n" +
+    "      \"constant\": true,\n" +
+    "      \"inputs\": [\n" +
+    "        {\n" +
+    "          \"name\": \"\",\n" +
+    "          \"type\": \"uint256\"\n" +
+    "        }\n" +
+    "      ],\n" +
+    "      \"name\": \"moves\",\n" +
+    "      \"outputs\": [\n" +
+    "        {\n" +
+    "          \"name\": \"player\",\n" +
+    "          \"type\": \"address\"\n" +
+    "        },\n" +
+    "        {\n" +
+    "          \"name\": \"tile\",\n" +
+    "          \"type\": \"string\"\n" +
+    "        },\n" +
+    "        {\n" +
+    "          \"name\": \"side\",\n" +
+    "          \"type\": \"string\"\n" +
+    "        }\n" +
+    "      ],\n" +
+    "      \"payable\": false,\n" +
+    "      \"stateMutability\": \"view\",\n" +
+    "      \"type\": \"function\"\n" +
+    "    },\n" +
+    "    {\n" +
+    "      \"constant\": true,\n" +
+    "      \"inputs\": [],\n" +
+    "      \"name\": \"gameOver\",\n" +
+    "      \"outputs\": [\n" +
+    "        {\n" +
+    "          \"name\": \"\",\n" +
+    "          \"type\": \"bool\"\n" +
+    "        }\n" +
+    "      ],\n" +
+    "      \"payable\": false,\n" +
+    "      \"stateMutability\": \"view\",\n" +
+    "      \"type\": \"function\"\n" +
+    "    },\n" +
+    "    {\n" +
+    "      \"constant\": true,\n" +
+    "      \"inputs\": [],\n" +
+    "      \"name\": \"state\",\n" +
+    "      \"outputs\": [\n" +
+    "        {\n" +
+    "          \"name\": \"seq\",\n" +
+    "          \"type\": \"uint8\"\n" +
+    "        },\n" +
+    "        {\n" +
+    "          \"name\": \"num\",\n" +
+    "          \"type\": \"uint8\"\n" +
+    "        },\n" +
+    "        {\n" +
+    "          \"name\": \"whoseTurn\",\n" +
+    "          \"type\": \"address\"\n" +
+    "        }\n" +
+    "      ],\n" +
+    "      \"payable\": false,\n" +
+    "      \"stateMutability\": \"view\",\n" +
+    "      \"type\": \"function\"\n" +
+    "    },\n" +
+    "    {\n" +
+    "      \"constant\": true,\n" +
+    "      \"inputs\": [],\n" +
+    "      \"name\": \"player1\",\n" +
+    "      \"outputs\": [\n" +
+    "        {\n" +
+    "          \"name\": \"\",\n" +
+    "          \"type\": \"address\"\n" +
+    "        }\n" +
+    "      ],\n" +
+    "      \"payable\": false,\n" +
+    "      \"stateMutability\": \"view\",\n" +
+    "      \"type\": \"function\"\n" +
+    "    },\n" +
+    "    {\n" +
+    "      \"inputs\": [],\n" +
+    "      \"payable\": true,\n" +
+    "      \"stateMutability\": \"payable\",\n" +
+    "      \"type\": \"constructor\"\n" +
+    "    },\n" +
+    "    {\n" +
+    "      \"anonymous\": false,\n" +
+    "      \"inputs\": [],\n" +
+    "      \"name\": \"GameStarted\",\n" +
+    "      \"type\": \"event\"\n" +
+    "    },\n" +
+    "    {\n" +
+    "      \"anonymous\": false,\n" +
+    "      \"inputs\": [\n" +
+    "        {\n" +
+    "          \"indexed\": false,\n" +
+    "          \"name\": \"player\",\n" +
+    "          \"type\": \"address\"\n" +
+    "        },\n" +
+    "        {\n" +
+    "          \"indexed\": false,\n" +
+    "          \"name\": \"seq\",\n" +
+    "          \"type\": \"uint8\"\n" +
+    "        },\n" +
+    "        {\n" +
+    "          \"indexed\": false,\n" +
+    "          \"name\": \"value\",\n" +
+    "          \"type\": \"uint8\"\n" +
+    "        }\n" +
+    "      ],\n" +
+    "      \"name\": \"MoveMade\",\n" +
+    "      \"type\": \"event\"\n" +
+    "    },\n" +
+    "    {\n" +
+    "      \"constant\": false,\n" +
+    "      \"inputs\": [\n" +
+    "        {\n" +
+    "          \"name\": \"player2Addr\",\n" +
+    "          \"type\": \"address\"\n" +
+    "        },\n" +
+    "        {\n" +
+    "          \"name\": \"player3Addr\",\n" +
+    "          \"type\": \"address\"\n" +
+    "        },\n" +
+    "        {\n" +
+    "          \"name\": \"player4Addr\",\n" +
+    "          \"type\": \"address\"\n" +
+    "        }\n" +
+    "      ],\n" +
+    "      \"name\": \"join\",\n" +
+    "      \"outputs\": [\n" +
+    "        {\n" +
+    "          \"name\": \"\",\n" +
+    "          \"type\": \"address\"\n" +
+    "        }\n" +
+    "      ],\n" +
+    "      \"payable\": false,\n" +
+    "      \"stateMutability\": \"nonpayable\",\n" +
+    "      \"type\": \"function\"\n" +
+    "    },\n" +
+    "    {\n" +
+    "      \"constant\": false,\n" +
+    "      \"inputs\": [],\n" +
+    "      \"name\": \"cancel\",\n" +
+    "      \"outputs\": [],\n" +
+    "      \"payable\": false,\n" +
+    "      \"stateMutability\": \"nonpayable\",\n" +
+    "      \"type\": \"function\"\n" +
+    "    },\n" +
+    "    {\n" +
+    "      \"constant\": false,\n" +
+    "      \"inputs\": [\n" +
+    "        {\n" +
+    "          \"name\": \"player\",\n" +
+    "          \"type\": \"address\"\n" +
+    "        },\n" +
+    "        {\n" +
+    "          \"name\": \"tile\",\n" +
+    "          \"type\": \"string\"\n" +
+    "        },\n" +
+    "        {\n" +
+    "          \"name\": \"side\",\n" +
+    "          \"type\": \"string\"\n" +
+    "        }\n" +
+    "      ],\n" +
+    "      \"name\": \"savingMove\",\n" +
+    "      \"outputs\": [],\n" +
+    "      \"payable\": false,\n" +
+    "      \"stateMutability\": \"nonpayable\",\n" +
+    "      \"type\": \"function\"\n" +
+    "    },\n" +
+    "    {\n" +
+    "      \"constant\": false,\n" +
+    "      \"inputs\": [\n" +
+    "        {\n" +
+    "          \"name\": \"seq\",\n" +
+    "          \"type\": \"uint8\"\n" +
+    "        },\n" +
+    "        {\n" +
+    "          \"name\": \"value\",\n" +
+    "          \"type\": \"uint8\"\n" +
+    "        }\n" +
+    "      ],\n" +
+    "      \"name\": \"saveMove\",\n" +
+    "      \"outputs\": [],\n" +
+    "      \"payable\": false,\n" +
+    "      \"stateMutability\": \"nonpayable\",\n" +
+    "      \"type\": \"function\"\n" +
+    "    }\n" +
+    "  ]";
+
+var web3;
+var contract;
+function init() {
+    if (typeof web3 !== 'undefined') {
+        web3 = new Web3(web3.currentProvider);
+    } else {
+        // set the provider you want from Web3.providers
+        web3 = new Web3(new Web3.providers.HttpProvider('http://localhost:7545'));
+        contract = new web3.eth.Contract(abi, '0xCC624b40F53Bac6A12D74daBc176736fc0a976fE');
+        if (!web3.isConnected())
+            console.log("not connected");
+        else
+            console.log("connected");
+    }
+}
 
 function startGame() {
     //playerprompt.innerHTML = 'wat';
