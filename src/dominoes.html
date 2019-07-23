@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" charset="utf-8" />
     <style>
         canvas {
             border: 1px solid #d3d3d3;
@@ -11,67 +11,90 @@
     </style>
 </head>
 
-<body onload="startGame()">
-<header>
-    <h1>These are Mario's Dominoes. Pray nothing breaks.</h1>
-</header>
-<br>
+<body>
+    <!--onload="startGame()"-->
+    <header>
+        <h1>These are Mario's Dominoes. Pray nothing breaks.</h1>
+    </header>
+    <br>
 
-<img id="basetiles" src="../tiles.png" alt="Base Tiles" width="350" height="750" style="display:none"></img>
-<div style="height:120px;">
-    <div id="logprompt"
-         style="float:left;height:120px;width:500px;border:5px solid rgb(0, 0, 0);overflow:auto;padding-left:10px;">
-        Welcome to Mario's Dominoes. Pray nothing breaks.
+    <img id="basetiles" src="../tiles.png" alt="Base Tiles" width="350" height="750" style="display:none"></img>
+    <div id="accountprompt" style="text-align:center;border:5px solid rgb(204,33,25);">
+        Before starting you must fill out these fields.
+        <br>
+        <br>
+        Player One's ETH address:<br>
+        <input type="text" id="POneETH" value=""> <input type="button" id="POneETHbutton" onclick="ETHLockIn('POneETH')"
+            value="Lock In">
+        <br><br>
+        Player Two's ETH address:<br>
+        <input type="text" id="PTwoETH" value=""> <input type="button" id="PTwoETHbutton" onclick="ETHLockIn('PTwoETH')"
+            value="Lock In">
+        <br><br>
+        Player Three's ETH address:<br>
+        <input type="text" id="PThreeETH" value=""> <input type="button" id="PThreeETHbutton"
+            onclick="ETHLockIn('PThreeETH')" value="Lock In">
+        <br><br>
+        Player Four's ETH address:<br>
+        <input type="text" id="PFourETH" value=""> <input type="button" id="PFourETHbutton"
+            onclick="ETHLockIn('PFourETH')" value="Lock In">
     </div>
-    <div id="account" style="text-align:center;float:right;height:120px;width:250px;border:5px solid rgb(204,33,25);">
-        This is the blockchain accounts of the players
+    <div id="game" style="display:none">
+        <div style="height:120px;">
+            <div id="logprompt"
+                style="float:left;height:120px;width:500px;border:5px solid rgb(0, 0, 0);overflow:auto;padding-left:10px;">
+                Welcome to Mario's Dominoes. Pray nothing breaks.
+            </div>
+            <div id="scoreprompt"
+                style="text-align:center;float:left;height:120px;width:250px;border:5px solid rgb(112, 101, 0);">
+                This is the raw score prompt. You should not see this for long.
+            </div>
+            <div id="accountlist"
+                style="text-align:center;float:right;height:120px;width:750px;overflow:auto;border:5px solid rgb(0, 88, 0);">
+                This is the raw account reference. You should not see this for long.
+            </div>
+        </div>
+        <br>
+        <p id="playerprompt" style="color:red">This is the raw player prompt. You should not see this for long.</p>
+        <p id="boardprompt">The board:</p>
+
+        <canvas id="board" width="2800" height="150"></canvas>
+        <br>
+
+        <p id="handprompt">Your hand:</p>
+
+        <div id=side_radio>
+            <input type="radio" id="side_left" name="side" value="left" checked>
+            <label for="side_left">Play Left</label>
+
+            <input type="radio" id="side_right" name="side" value="right">
+            <label for="side_right">Play Right</label>
+        </div>
+
+        <br>
+
+        <canvas id="hand" width="350" height="100"></canvas>
+        <br>
+
+        <div id=play_buttons>
+            <!-- tabs count as spaces, this formatting shoves all buttons together -->
+            <!-- <button id="hand_zero" onclick="playTile(0)" style="padding:2px;height:50px;width:50px">Play</button> -->
+        </div>
+
+        <br>
+
+        <br>
+        <canvas id="tempTile" width="100" height="100" style="display:none"></canvas>
+        <br>
     </div>
-    <div id="scoreprompt"
-         style="text-align:center;float:right;height:120px;width:250px;border:5px solid rgb(112, 101, 0);">
-        This is the raw score prompt. You should not see this for long.
-    </div>
-</div>
-<br>
-<p id="playerprompt" style="color:red">This is the raw player prompt. You should not see this for long.</p>
-<p id="boardprompt">The board:</p>
 
-<canvas id="board" width="2800" height="150"></canvas>
-<br>
+    <script type="application/javascript" src="dominoes.js"></script>
+    <script type="application/javascript" src="web3.min.js"></script>
 
-<p id="handprompt">Your hand:</p>
-
-<div id=side_radio>
-    <input type="radio" id="side_left" name="side" value="left" checked>
-    <label for="side_left">Play Left</label>
-
-    <input type="radio" id="side_right" name="side" value="right">
-    <label for="side_right">Play Right</label>
-</div>
-
-<br>
-
-<canvas id="hand" width="350" height="100"></canvas>
-<br>
-
-<div id=play_buttons>
-    <!-- tabs count as spaces, this formatting shoves all buttons together -->
-    <!-- <button id="hand_zero" onclick="playTile(0)" style="padding:2px;height:50px;width:50px">Play</button> -->
-</div>
-
-<br>
-
-<br>
-<canvas id="tempTile" width="100" height="100" style="display:none"></canvas>
-<br>
+    <script type="application/javascript">
 
 
-<script type="application/javascript" src="dominoes.js"></script>
-<script type="application/javascript" src="web3.min.js"></script>
-
-<script type="application/javascript">
-
-
-</script>
+    </script>
 
 </body>
 

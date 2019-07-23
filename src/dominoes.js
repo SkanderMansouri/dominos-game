@@ -40,6 +40,11 @@ var scoreprompt = document.getElementById("scoreprompt");
 var side_left = document.getElementById("side_left");
 var side_right = document.getElementById("side_right");
 
+var POneETH = document.getElementById("POneETH");
+var PTwoETH = document.getElementById("PTwoETH");
+var PThreeETH = document.getElementById("PThreeETH");
+var PFourETH = document.getElementById("PFourETH");
+
 var abi = "[\n" +
     "    {\n" +
     "      \"constant\": true,\n" +
@@ -288,17 +293,21 @@ function init() {
     }
 }
 
+function ETHLockIn(player) {
+    var content = document.getElementById(player).value;
+    if (content.length > 0) {
+        document.getElementById(player).disabled = true;
+    }
+    if (POneETH.disabled && PTwoETH.disabled && PThreeETH.disabled && PFourETH.disabled) {
+        document.getElementById('accountprompt').style.display = 'none';
+        document.getElementById('accountlist').innerHTML = "Player One's account:<br>" + POneETH.value + "<br><br>Player Two's account:<br>" + PTwoETH.value + "<br><br>Player Three's account:<br>" + PThreeETH.value + "<br><br>Player Four's account:<br>" + PFourETH.value;
+        document.getElementById('game').style.display = 'inline';
+        startGame();
+    }
+}
+
 function startGame() {
-    //playerprompt.innerHTML = 'wat';
     setupNewRound();
-    //playerprompt.innerHTML = printTileArray(basetiles);
-    //board.push(ptwo[0]);
-    //board.push(pthree[1]);
-    //drawBoard();
-    //currentPlayer = 1;
-    //drawHand(pone);
-    //drawSideTile(ptwo[0], true, 0);
-    //drawSideTile(ptwo[1], false, 200);
     var firstRoundStarter = findPlayerWithDoubleSix();
     currentPlayer = firstRoundStarter[0] + 1;
     starter = currentPlayer;
@@ -308,7 +317,7 @@ function startGame() {
 
 function setupNewRound() {
     logprompt.innerHTML += "<br>===Round " + round + "===";
-    if(round>1){
+    if (round > 1) {
         logprompt.innerHTML += "<br>Player " + currentPlayer + " starts the round.";
         logprompt.scrollTop = logprompt.scrollHeight;
     }
@@ -550,15 +559,15 @@ function nextTurnSetup() {
 
             var tempOne = getPlayerTeam(currentPlayer);
             var tempTwo = getPlayerTeam(nextPlayer(currentPlayer));
-            if (tempOne[2] === 0){
+            if (tempOne[2] === 0) {
                 countWinnerPoints(tempOne, tempTwo, 0)
             }
-            else{
+            else {
                 countWinnerPoints(tempTwo, tempOne, 0)
             }
             endOfRound();
         }
-        else{
+        else {
             passes = 0;
             drawBoard();
             drawHand(gamestate[currentPlayer - 1]);
@@ -566,13 +575,13 @@ function nextTurnSetup() {
     }
 }
 
-function getPlayerTeam(player){
-    var teamnumber = (player-1)%2;
+function getPlayerTeam(player) {
+    var teamnumber = (player - 1) % 2;
     var teammate = nextPlayer(nextPlayer(player));
-    return [gamestate[player-1], gamestate[teammate-1], teamnumber];
+    return [gamestate[player - 1], gamestate[teammate - 1], teamnumber];
 }
 
-function countWinnerPoints(teamOne, teamTwo, winner){
+function countWinnerPoints(teamOne, teamTwo, winner) {
     var scoreOne = countTeamPoints(teamOne);
     var scoreTwo = countTeamPoints(teamTwo);
     logprompt.innerHTML += "<br>Here are the final hands: ";
@@ -584,40 +593,40 @@ function countWinnerPoints(teamOne, teamTwo, winner){
     logprompt.innerHTML += "<br>Player two: " + printTileArray(teamTwo[0]);
     logprompt.innerHTML += "<br>Player four: " + printTileArray(teamTwo[1]);
     logprompt.scrollTop = logprompt.scrollHeight;
-    if(winner === 0){
-        if(scoreOne = scoreTwo){
+    if (winner === 0) {
+        if (scoreOne = scoreTwo) {
             logprompt.innerHTML += "<br>Perfect draw. No points granted.";
             logprompt.scrollTop = logprompt.scrollHeight;
         }
-        else if(scoreOne > scoreTwo){
+        else if (scoreOne > scoreTwo) {
             logprompt.innerHTML += "<br>Team Two Wins. Adding " + scoreOne + " points to their score.";
             logprompt.scrollTop = logprompt.scrollHeight;
             teamTwoScore += scoreOne;
         }
-        else{
+        else {
             logprompt.innerHTML += "<br>Team One Wins. Adding " + scoreTwo + " points to their score.";
             logprompt.scrollTop = logprompt.scrollHeight;
             teamOneScore += scoreTwo;
         }
     }
-    else if(winner === 1){
+    else if (winner === 1) {
         logprompt.innerHTML += "<br>Team One Wins. Adding " + scoreTwo + " points to their score.";
         logprompt.scrollTop = logprompt.scrollHeight;
         teamOneScore += scoreTwo;
     }
-    else if(winner === 2){
+    else if (winner === 2) {
         logprompt.innerHTML += "<br>Team Two Wins. Adding " + scoreOne + " points to their score.";
         logprompt.scrollTop = logprompt.scrollHeight;
         teamTwoScore += scoreOne;
     }
 }
 
-function endOfRound(){
-    if(teamOneScore >= 100){
+function endOfRound() {
+    if (teamOneScore >= 100) {
         logprompt.innerHTML += "<br>===GAME OVER===<br>Team One Wins the game.";
         logprompt.scrollTop = logprompt.scrollHeight;
     }
-    else if(teamTwoScore >= 100){
+    else if (teamTwoScore >= 100) {
         logprompt.innerHTML += "<br>===GAME OVER===<br>Team Two Wins the game.";
         logprompt.scrollTop = logprompt.scrollHeight;
     }
@@ -631,16 +640,16 @@ function endOfRound(){
     }
 }
 
-function countTeamPoints(team){
+function countTeamPoints(team) {
     var index = 0;
     var score = 0;
-    while(index < team[0].length){
+    while (index < team[0].length) {
         logprompt.scrollTop = logprompt.scrollHeight;
         score += countTilePoints(team[0][index].tile);
         index++;
     }
     index = 0;
-    while(index < team[1].length){
+    while (index < team[1].length) {
         score += countTilePoints(team[1][index].tile);
         index++;
     }
@@ -648,7 +657,7 @@ function countTeamPoints(team){
     return score;
 }
 
-function countTilePoints(tile){
+function countTilePoints(tile) {
     return parseInt(tile.charAt(0)) + parseInt(tile.charAt(1));
 }
 
