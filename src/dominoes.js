@@ -1,4 +1,3 @@
-
 var tileWidth = 50;
 var tileHeight = 100;
 
@@ -45,252 +44,16 @@ var PTwoETH = document.getElementById("PTwoETH");
 var PThreeETH = document.getElementById("PThreeETH");
 var PFourETH = document.getElementById("PFourETH");
 
-var abi = "[\n" +
-    "    {\n" +
-    "      \"constant\": true,\n" +
-    "      \"inputs\": [],\n" +
-    "      \"name\": \"player4\",\n" +
-    "      \"outputs\": [\n" +
-    "        {\n" +
-    "          \"name\": \"\",\n" +
-    "          \"type\": \"address\"\n" +
-    "        }\n" +
-    "      ],\n" +
-    "      \"payable\": false,\n" +
-    "      \"stateMutability\": \"view\",\n" +
-    "      \"type\": \"function\"\n" +
-    "    },\n" +
-    "    {\n" +
-    "      \"constant\": true,\n" +
-    "      \"inputs\": [],\n" +
-    "      \"name\": \"player3\",\n" +
-    "      \"outputs\": [\n" +
-    "        {\n" +
-    "          \"name\": \"\",\n" +
-    "          \"type\": \"address\"\n" +
-    "        }\n" +
-    "      ],\n" +
-    "      \"payable\": false,\n" +
-    "      \"stateMutability\": \"view\",\n" +
-    "      \"type\": \"function\"\n" +
-    "    },\n" +
-    "    {\n" +
-    "      \"constant\": true,\n" +
-    "      \"inputs\": [],\n" +
-    "      \"name\": \"player2\",\n" +
-    "      \"outputs\": [\n" +
-    "        {\n" +
-    "          \"name\": \"\",\n" +
-    "          \"type\": \"address\"\n" +
-    "        }\n" +
-    "      ],\n" +
-    "      \"payable\": false,\n" +
-    "      \"stateMutability\": \"view\",\n" +
-    "      \"type\": \"function\"\n" +
-    "    },\n" +
-    "    {\n" +
-    "      \"constant\": true,\n" +
-    "      \"inputs\": [\n" +
-    "        {\n" +
-    "          \"name\": \"\",\n" +
-    "          \"type\": \"uint256\"\n" +
-    "        }\n" +
-    "      ],\n" +
-    "      \"name\": \"moves\",\n" +
-    "      \"outputs\": [\n" +
-    "        {\n" +
-    "          \"name\": \"player\",\n" +
-    "          \"type\": \"address\"\n" +
-    "        },\n" +
-    "        {\n" +
-    "          \"name\": \"tile\",\n" +
-    "          \"type\": \"string\"\n" +
-    "        },\n" +
-    "        {\n" +
-    "          \"name\": \"side\",\n" +
-    "          \"type\": \"string\"\n" +
-    "        }\n" +
-    "      ],\n" +
-    "      \"payable\": false,\n" +
-    "      \"stateMutability\": \"view\",\n" +
-    "      \"type\": \"function\"\n" +
-    "    },\n" +
-    "    {\n" +
-    "      \"constant\": true,\n" +
-    "      \"inputs\": [],\n" +
-    "      \"name\": \"gameOver\",\n" +
-    "      \"outputs\": [\n" +
-    "        {\n" +
-    "          \"name\": \"\",\n" +
-    "          \"type\": \"bool\"\n" +
-    "        }\n" +
-    "      ],\n" +
-    "      \"payable\": false,\n" +
-    "      \"stateMutability\": \"view\",\n" +
-    "      \"type\": \"function\"\n" +
-    "    },\n" +
-    "    {\n" +
-    "      \"constant\": true,\n" +
-    "      \"inputs\": [],\n" +
-    "      \"name\": \"state\",\n" +
-    "      \"outputs\": [\n" +
-    "        {\n" +
-    "          \"name\": \"seq\",\n" +
-    "          \"type\": \"uint8\"\n" +
-    "        },\n" +
-    "        {\n" +
-    "          \"name\": \"num\",\n" +
-    "          \"type\": \"uint8\"\n" +
-    "        },\n" +
-    "        {\n" +
-    "          \"name\": \"whoseTurn\",\n" +
-    "          \"type\": \"address\"\n" +
-    "        }\n" +
-    "      ],\n" +
-    "      \"payable\": false,\n" +
-    "      \"stateMutability\": \"view\",\n" +
-    "      \"type\": \"function\"\n" +
-    "    },\n" +
-    "    {\n" +
-    "      \"constant\": true,\n" +
-    "      \"inputs\": [],\n" +
-    "      \"name\": \"player1\",\n" +
-    "      \"outputs\": [\n" +
-    "        {\n" +
-    "          \"name\": \"\",\n" +
-    "          \"type\": \"address\"\n" +
-    "        }\n" +
-    "      ],\n" +
-    "      \"payable\": false,\n" +
-    "      \"stateMutability\": \"view\",\n" +
-    "      \"type\": \"function\"\n" +
-    "    },\n" +
-    "    {\n" +
-    "      \"inputs\": [],\n" +
-    "      \"payable\": true,\n" +
-    "      \"stateMutability\": \"payable\",\n" +
-    "      \"type\": \"constructor\"\n" +
-    "    },\n" +
-    "    {\n" +
-    "      \"anonymous\": false,\n" +
-    "      \"inputs\": [],\n" +
-    "      \"name\": \"GameStarted\",\n" +
-    "      \"type\": \"event\"\n" +
-    "    },\n" +
-    "    {\n" +
-    "      \"anonymous\": false,\n" +
-    "      \"inputs\": [\n" +
-    "        {\n" +
-    "          \"indexed\": false,\n" +
-    "          \"name\": \"player\",\n" +
-    "          \"type\": \"address\"\n" +
-    "        },\n" +
-    "        {\n" +
-    "          \"indexed\": false,\n" +
-    "          \"name\": \"seq\",\n" +
-    "          \"type\": \"uint8\"\n" +
-    "        },\n" +
-    "        {\n" +
-    "          \"indexed\": false,\n" +
-    "          \"name\": \"value\",\n" +
-    "          \"type\": \"uint8\"\n" +
-    "        }\n" +
-    "      ],\n" +
-    "      \"name\": \"MoveMade\",\n" +
-    "      \"type\": \"event\"\n" +
-    "    },\n" +
-    "    {\n" +
-    "      \"constant\": false,\n" +
-    "      \"inputs\": [\n" +
-    "        {\n" +
-    "          \"name\": \"player2Addr\",\n" +
-    "          \"type\": \"address\"\n" +
-    "        },\n" +
-    "        {\n" +
-    "          \"name\": \"player3Addr\",\n" +
-    "          \"type\": \"address\"\n" +
-    "        },\n" +
-    "        {\n" +
-    "          \"name\": \"player4Addr\",\n" +
-    "          \"type\": \"address\"\n" +
-    "        }\n" +
-    "      ],\n" +
-    "      \"name\": \"join\",\n" +
-    "      \"outputs\": [\n" +
-    "        {\n" +
-    "          \"name\": \"\",\n" +
-    "          \"type\": \"address\"\n" +
-    "        }\n" +
-    "      ],\n" +
-    "      \"payable\": false,\n" +
-    "      \"stateMutability\": \"nonpayable\",\n" +
-    "      \"type\": \"function\"\n" +
-    "    },\n" +
-    "    {\n" +
-    "      \"constant\": false,\n" +
-    "      \"inputs\": [],\n" +
-    "      \"name\": \"cancel\",\n" +
-    "      \"outputs\": [],\n" +
-    "      \"payable\": false,\n" +
-    "      \"stateMutability\": \"nonpayable\",\n" +
-    "      \"type\": \"function\"\n" +
-    "    },\n" +
-    "    {\n" +
-    "      \"constant\": false,\n" +
-    "      \"inputs\": [\n" +
-    "        {\n" +
-    "          \"name\": \"player\",\n" +
-    "          \"type\": \"address\"\n" +
-    "        },\n" +
-    "        {\n" +
-    "          \"name\": \"tile\",\n" +
-    "          \"type\": \"string\"\n" +
-    "        },\n" +
-    "        {\n" +
-    "          \"name\": \"side\",\n" +
-    "          \"type\": \"string\"\n" +
-    "        }\n" +
-    "      ],\n" +
-    "      \"name\": \"savingMove\",\n" +
-    "      \"outputs\": [],\n" +
-    "      \"payable\": false,\n" +
-    "      \"stateMutability\": \"nonpayable\",\n" +
-    "      \"type\": \"function\"\n" +
-    "    },\n" +
-    "    {\n" +
-    "      \"constant\": false,\n" +
-    "      \"inputs\": [\n" +
-    "        {\n" +
-    "          \"name\": \"seq\",\n" +
-    "          \"type\": \"uint8\"\n" +
-    "        },\n" +
-    "        {\n" +
-    "          \"name\": \"value\",\n" +
-    "          \"type\": \"uint8\"\n" +
-    "        }\n" +
-    "      ],\n" +
-    "      \"name\": \"saveMove\",\n" +
-    "      \"outputs\": [],\n" +
-    "      \"payable\": false,\n" +
-    "      \"stateMutability\": \"nonpayable\",\n" +
-    "      \"type\": \"function\"\n" +
-    "    }\n" +
-    "  ]";
+var playersAddress = [POneETH.value,PTwoETH.value,PThreeETH.value,PFourETH.value];
 
-var web3;
+var abi = JSON.parse("[{\"constant\":true,\"inputs\":[{\"name\":\"\",\"type\":\"uint256\"}],\"name\":\"moves\",\"outputs\":[{\"name\":\"player\",\"type\":\"address\"},{\"name\":\"tile\",\"type\":\"string\"},{\"name\":\"side\",\"type\":\"string\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[],\"name\":\"gameOver\",\"outputs\":[{\"name\":\"\",\"type\":\"bool\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[{\"name\":\"\",\"type\":\"uint256\"}],\"name\":\"players\",\"outputs\":[{\"name\":\"player\",\"type\":\"address\"},{\"name\":\"handHash\",\"type\":\"bytes32\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"payable\":true,\"stateMutability\":\"payable\",\"type\":\"constructor\"},{\"anonymous\":false,\"inputs\":[],\"name\":\"GameStarted\",\"type\":\"event\"},{\"constant\":false,\"inputs\":[{\"name\":\"player2Addr\",\"type\":\"address\"},{\"name\":\"player3Addr\",\"type\":\"address\"},{\"name\":\"player4Addr\",\"type\":\"address\"},{\"name\":\"player1HandHash\",\"type\":\"bytes32\"},{\"name\":\"player2HandHash\",\"type\":\"bytes32\"},{\"name\":\"player3HandHash\",\"type\":\"bytes32\"},{\"name\":\"player4HandHash\",\"type\":\"bytes32\"}],\"name\":\"join\",\"outputs\":[{\"name\":\"\",\"type\":\"address\"}],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"playerAddr\",\"type\":\"address\"},{\"name\":\"tile\",\"type\":\"string\"},{\"name\":\"side\",\"type\":\"string\"}],\"name\":\"savingMove\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"}]");
 var contract;
+var web3;
+
+
 function init() {
-    if (typeof web3 !== 'undefined') {
-        web3 = new Web3(web3.currentProvider);
-    } else {
-        // set the provider you want from Web3.providers
-        web3 = new Web3(new Web3.providers.HttpProvider('http://localhost:7545'));
-        contract = new web3.eth.Contract(abi, '0xCC624b40F53Bac6A12D74daBc176736fc0a976fE');
-        if (!web3.isConnected())
-            console.log("not connected");
-        else
-            console.log("connected");
-    }
+    web3 = new Web3(Web3.givenProvider || new Web3.providers.WebsocketProvider('ws://localhost:7545'), null, {});
+    contract = new web3.eth.Contract(abi, '0x0395a766F5fd179A002E5A9B4B7a416F27cf6587');
 }
 
 function ETHLockIn(player) {
@@ -306,12 +69,16 @@ function ETHLockIn(player) {
     }
 }
 
+
 function startGame() {
     setupNewRound();
     var firstRoundStarter = findPlayerWithDoubleSix();
     currentPlayer = firstRoundStarter[0] + 1;
     starter = currentPlayer;
     logprompt.innerHTML += "<br>Player " + currentPlayer + " starts the round.";
+    console.log(starter);
+    console.log(gamestate);
+
     playTile(firstRoundStarter[1]);
 }
 
@@ -430,8 +197,7 @@ function drawBoard() {
             board_context.fillText("P" + gamestate.board[index].player, reference_position + tileWidth / 2, 135);
 
             reference_position += tileWidth;
-        }
-        else {
+        } else {
             drawSideTile(gamestate.board[index], gamestate.board[index].flip, reference_position);
 
             board_context.fillText("P" + gamestate.board[index].player, reference_position + tileHeight / 2, 135);
@@ -473,7 +239,9 @@ function makePlayButton(index) {
     btn.style.width = "50px";
     btn.style.height = "50px";
     btn.style.padding = "2px";
-    btn.onclick = function () { playTile(index); };
+    btn.onclick = function () {
+        playTile(index);
+    };
 
     play_buttons.appendChild(btn);
 }
@@ -485,8 +253,7 @@ function playTile(index) {
 
         if (side_left.checked) {
             playside = "left";
-        }
-        else if (side_right.checked) {
+        } else if (side_right.checked) {
             playside = "right";
         }
 
@@ -498,12 +265,10 @@ function playTile(index) {
                 gamestate[currentPlayer - 1][index].tile = gamestate[currentPlayer - 1][index].tile.split("").reverse().join("");
             }
             playTileHelper(index, playside);
-        }
-        else {
+        } else {
             playerprompt.innerHTML = "Cannot play " + gamestate[currentPlayer - 1][index].tile + " on the " + playside + ". Please try a different tile.";
         }
-    }
-    else {
+    } else {
         playTileHelper(index, "left");
     }
 }
@@ -514,8 +279,7 @@ function playTileHelper(index, playside) {
         gamestate.board.push(gamestate[currentPlayer - 1][index]);
         logprompt.innerHTML += "<br>Turn " + turn + ": Player " + currentPlayer + " plays the " + gamestate[currentPlayer - 1][index].tile + " on the right.";
         logprompt.scrollTop = logprompt.scrollHeight;
-    }
-    else {
+    } else {
         gamestate[currentPlayer - 1][index].turn = turn;
         gamestate.board.unshift(gamestate[currentPlayer - 1][index]);
         logprompt.innerHTML += "<br>Turn " + turn + ": Player " + currentPlayer + " plays the " + gamestate[currentPlayer - 1][index].tile + " on the left.";
@@ -539,13 +303,11 @@ function nextTurnSetup() {
         var tempTwo = getPlayerTeam(nextPlayer(currentPlayer));
         if (tempOne[2] === 0) {
             countWinnerPoints(tempOne, tempTwo, 1)
-        }
-        else {
+        } else {
             countWinnerPoints(tempTwo, tempOne, 2)
         }
         endOfRound();
-    }
-    else {
+    } else {
         currentPlayer = nextPlayer(currentPlayer);
         while (youPass(gamestate[currentPlayer - 1]) && passes < 4) {
             logprompt.innerHTML += "<br>Turn " + turn + ": Player " + currentPlayer + " passes.";
@@ -561,13 +323,11 @@ function nextTurnSetup() {
             var tempTwo = getPlayerTeam(nextPlayer(currentPlayer));
             if (tempOne[2] === 0) {
                 countWinnerPoints(tempOne, tempTwo, 0)
-            }
-            else {
+            } else {
                 countWinnerPoints(tempTwo, tempOne, 0)
             }
             endOfRound();
-        }
-        else {
+        } else {
             passes = 0;
             drawBoard();
             drawHand(gamestate[currentPlayer - 1]);
@@ -597,24 +357,20 @@ function countWinnerPoints(teamOne, teamTwo, winner) {
         if (scoreOne = scoreTwo) {
             logprompt.innerHTML += "<br>Perfect draw. No points granted.";
             logprompt.scrollTop = logprompt.scrollHeight;
-        }
-        else if (scoreOne > scoreTwo) {
+        } else if (scoreOne > scoreTwo) {
             logprompt.innerHTML += "<br>Team Two Wins. Adding " + scoreOne + " points to their score.";
             logprompt.scrollTop = logprompt.scrollHeight;
             teamTwoScore += scoreOne;
-        }
-        else {
+        } else {
             logprompt.innerHTML += "<br>Team One Wins. Adding " + scoreTwo + " points to their score.";
             logprompt.scrollTop = logprompt.scrollHeight;
             teamOneScore += scoreTwo;
         }
-    }
-    else if (winner === 1) {
+    } else if (winner === 1) {
         logprompt.innerHTML += "<br>Team One Wins. Adding " + scoreTwo + " points to their score.";
         logprompt.scrollTop = logprompt.scrollHeight;
         teamOneScore += scoreTwo;
-    }
-    else if (winner === 2) {
+    } else if (winner === 2) {
         logprompt.innerHTML += "<br>Team Two Wins. Adding " + scoreOne + " points to their score.";
         logprompt.scrollTop = logprompt.scrollHeight;
         teamTwoScore += scoreOne;
@@ -625,12 +381,10 @@ function endOfRound() {
     if (teamOneScore >= 100) {
         logprompt.innerHTML += "<br>===GAME OVER===<br>Team One Wins the game.";
         logprompt.scrollTop = logprompt.scrollHeight;
-    }
-    else if (teamTwoScore >= 100) {
+    } else if (teamTwoScore >= 100) {
         logprompt.innerHTML += "<br>===GAME OVER===<br>Team Two Wins the game.";
         logprompt.scrollTop = logprompt.scrollHeight;
-    }
-    else {
+    } else {
         round++;
         starter = nextPlayer(starter);
         currentPlayer = starter;
@@ -665,8 +419,7 @@ function checkPlay(tile, playside) {
     var valid = -1;
     if (playside === "right") {
         valid = tile.indexOf(gamestate.board[gamestate.board.length - 1].tile.charAt(1));
-    }
-    else if (playside === "left") {
+    } else if (playside === "left") {
         valid = tile.indexOf(gamestate.board[0].tile.charAt(0));
     }
     return valid;
@@ -678,8 +431,7 @@ function drawSideTile(tile, flip, xcoord) {
     tempTile_context.translate(tempTile_element.height / 2, tempTile_element.width / 2);
     if (flip === true) {
         tempTile_context.rotate((Math.PI * 270) / 180);
-    }
-    else {
+    } else {
         tempTile_context.rotate((Math.PI * 90) / 180);
     }
     tempTile_context.translate(-3 * tempTile_element.height / 4, -tempTile_element.width / 2);
@@ -732,3 +484,5 @@ function shuffle(array) {
 
     return array;
 }
+
+init();
