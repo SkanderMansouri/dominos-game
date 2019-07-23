@@ -44,9 +44,8 @@ var PTwoETH = document.getElementById("PTwoETH");
 var PThreeETH = document.getElementById("PThreeETH");
 var PFourETH = document.getElementById("PFourETH");
 
-var playersAddress = [POneETH.value,PTwoETH.value,PThreeETH.value,PFourETH.value];
-
-var abi = JSON.parse("[{\"constant\":true,\"inputs\":[{\"name\":\"\",\"type\":\"uint256\"}],\"name\":\"moves\",\"outputs\":[{\"name\":\"player\",\"type\":\"address\"},{\"name\":\"tile\",\"type\":\"string\"},{\"name\":\"side\",\"type\":\"string\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[],\"name\":\"gameOver\",\"outputs\":[{\"name\":\"\",\"type\":\"bool\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[{\"name\":\"\",\"type\":\"uint256\"}],\"name\":\"players\",\"outputs\":[{\"name\":\"player\",\"type\":\"address\"},{\"name\":\"handHash\",\"type\":\"bytes32\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"payable\":true,\"stateMutability\":\"payable\",\"type\":\"constructor\"},{\"anonymous\":false,\"inputs\":[],\"name\":\"GameStarted\",\"type\":\"event\"},{\"constant\":false,\"inputs\":[{\"name\":\"player2Addr\",\"type\":\"address\"},{\"name\":\"player3Addr\",\"type\":\"address\"},{\"name\":\"player4Addr\",\"type\":\"address\"},{\"name\":\"player1HandHash\",\"type\":\"bytes32\"},{\"name\":\"player2HandHash\",\"type\":\"bytes32\"},{\"name\":\"player3HandHash\",\"type\":\"bytes32\"},{\"name\":\"player4HandHash\",\"type\":\"bytes32\"}],\"name\":\"join\",\"outputs\":[{\"name\":\"\",\"type\":\"address\"}],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"playerAddr\",\"type\":\"address\"},{\"name\":\"tile\",\"type\":\"string\"},{\"name\":\"side\",\"type\":\"string\"}],\"name\":\"savingMove\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"}]");
+var playersAddress = [];
+var abi = JSON.parse("[{\"constant\":true,\"inputs\":[{\"name\":\"\",\"type\":\"uint256\"}],\"name\":\"moves\",\"outputs\":[{\"name\":\"player\",\"type\":\"address\"},{\"name\":\"tile\",\"type\":\"string\"},{\"name\":\"side\",\"type\":\"string\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[],\"name\":\"gameOver\",\"outputs\":[{\"name\":\"\",\"type\":\"bool\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[{\"name\":\"\",\"type\":\"uint256\"}],\"name\":\"players\",\"outputs\":[{\"name\":\"player\",\"type\":\"address\"},{\"name\":\"handHash\",\"type\":\"string\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"payable\":true,\"stateMutability\":\"payable\",\"type\":\"constructor\"},{\"anonymous\":false,\"inputs\":[],\"name\":\"GameStarted\",\"type\":\"event\"},{\"constant\":false,\"inputs\":[{\"name\":\"player2Addr\",\"type\":\"address\"},{\"name\":\"player3Addr\",\"type\":\"address\"},{\"name\":\"player4Addr\",\"type\":\"address\"},{\"name\":\"player1HandHash\",\"type\":\"string\"},{\"name\":\"player2HandHash\",\"type\":\"string\"},{\"name\":\"player3HandHash\",\"type\":\"string\"},{\"name\":\"player4HandHash\",\"type\":\"string\"}],\"name\":\"join\",\"outputs\":[{\"name\":\"\",\"type\":\"address\"}],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"playerAddr\",\"type\":\"address\"},{\"name\":\"tile\",\"type\":\"string\"},{\"name\":\"side\",\"type\":\"string\"}],\"name\":\"savingMove\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"}]");
 var contract;
 var web3;
 
@@ -65,6 +64,7 @@ function ETHLockIn(player) {
         document.getElementById('accountprompt').style.display = 'none';
         document.getElementById('accountlist').innerHTML = "Player One's account:<br>" + POneETH.value + "<br><br>Player Two's account:<br>" + PTwoETH.value + "<br><br>Player Three's account:<br>" + PThreeETH.value + "<br><br>Player Four's account:<br>" + PFourETH.value;
         document.getElementById('game').style.display = 'inline';
+        playersAddress = [POneETH.value,PTwoETH.value,PThreeETH.value,PFourETH.value];
         startGame();
     }
 }
@@ -72,16 +72,37 @@ function ETHLockIn(player) {
 
 function startGame() {
     setupNewRound();
+    saveGameInBlockchain();
     var firstRoundStarter = findPlayerWithDoubleSix();
     currentPlayer = firstRoundStarter[0] + 1;
     starter = currentPlayer;
     logprompt.innerHTML += "<br>Player " + currentPlayer + " starts the round.";
-    console.log(starter);
-    console.log(gamestate);
-
     playTile(firstRoundStarter[1]);
 }
 
+function saveGameInBlockchain() {
+    var hashedTiles = [];
+    for(var i=0;i<4; i++){
+        var hashedTile = hashTile(gamestate[i]);
+        hashedTiles.push(hashedTile);
+    }
+    console.log(playersAddress[0]);
+    contract.methods.join(playersAddress[1], playersAddress[2], playersAddress[3],hashedTiles[0]
+    ,hashedTiles[1],hashedTiles[2],hashedTiles[3]).send({
+        from: playersAddress[0],
+        gas: '500000'
+    });
+}
+
+function hashTile(gameState) {
+    var result = 0;
+    for (var i=0; i<7;i++){
+        result = result + parseInt(gameState[i].tile);
+    }
+    console.log(result);
+    console.log(typeof keccak256(result.toString()));
+    return keccak256(result.toString());
+}
 function setupNewRound() {
     logprompt.innerHTML += "<br>===Round " + round + "===";
     if (round > 1) {
