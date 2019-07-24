@@ -64,7 +64,7 @@ function ETHLockIn(player) {
         document.getElementById('accountprompt').style.display = 'none';
         document.getElementById('accountlist').innerHTML = "Player One's account:<br>" + POneETH.value + "<br><br>Player Two's account:<br>" + PTwoETH.value + "<br><br>Player Three's account:<br>" + PThreeETH.value + "<br><br>Player Four's account:<br>" + PFourETH.value;
         document.getElementById('game').style.display = 'inline';
-        playersAddress = [POneETH.value,PTwoETH.value,PThreeETH.value,PFourETH.value];
+        playersAddress = [POneETH.value, PTwoETH.value, PThreeETH.value, PFourETH.value];
         startGame();
     }
 }
@@ -82,13 +82,13 @@ function startGame() {
 
 function saveGameInBlockchain() {
     var hashedTiles = [];
-    for(var i=0;i<4; i++){
+    console.log(gamestate);
+    for (var i = 0; i < 4; i++) {
         var hashedTile = hashTile(gamestate[i]);
         hashedTiles.push(hashedTile);
     }
-    console.log(playersAddress[0]);
-    contract.methods.join(playersAddress[1], playersAddress[2], playersAddress[3],hashedTiles[0]
-    ,hashedTiles[1],hashedTiles[2],hashedTiles[3]).send({
+    contract.methods.join(playersAddress[1], playersAddress[2], playersAddress[3], hashedTiles[0]
+        , hashedTiles[1], hashedTiles[2], hashedTiles[3]).send({
         from: playersAddress[0],
         gas: '500000'
     });
@@ -96,13 +96,12 @@ function saveGameInBlockchain() {
 
 function hashTile(gameState) {
     var result = 0;
-    for (var i=0; i<7;i++){
+    for (var i = 0; i < 7; i++) {
         result = result + parseInt(gameState[i].tile);
     }
-    console.log(result);
-    console.log(typeof keccak256(result.toString()));
     return keccak256(result.toString());
 }
+
 function setupNewRound() {
     logprompt.innerHTML += "<br>===Round " + round + "===";
     if (round > 1) {
@@ -128,6 +127,15 @@ function setupNewRound() {
     scoreprompt.innerHTML = "<br>The Scoreboard <br><br>Team One: " + teamOneScore + " <br>Team Two: " + teamTwoScore;
 }
 
+function saveMoveInTheBlockchain(player,tile,side) {
+    console.log(player);
+    console.log(tile);
+    console.log(side);
+    contract.methods.savingMove(player, tile, side).send({
+        from: player,
+        gas: '500000'
+    });
+}
 function findPlayerWithDoubleSix() {
     var player = 0;
     var index = 0;
@@ -137,6 +145,7 @@ function findPlayerWithDoubleSix() {
     while (player < 4 && index < gamestate[player].length) {
         if (gamestate[player][index].tile == "66") {
             found = true;
+            saveMoveInTheBlockchain(playersAddress[player],"66","left");
             break;
         }
         if (index === gamestate[player].length - 1) {
@@ -306,7 +315,7 @@ function playTileHelper(index, playside) {
         logprompt.innerHTML += "<br>Turn " + turn + ": Player " + currentPlayer + " plays the " + gamestate[currentPlayer - 1][index].tile + " on the left.";
         logprompt.scrollTop = logprompt.scrollHeight;
     }
-
+    saveMoveInTheBlockchain(playersAddress[currentPlayer-1],gamestate[currentPlayer - 1][index].tile,playside);
     gamestate[currentPlayer - 1].splice(index, 1);
     drawBoard();
     drawHand(gamestate[currentPlayer - 1]);
