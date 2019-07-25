@@ -23,21 +23,30 @@
         Before starting you must fill out these fields.
         <br>
         <br>
-        Player One's ETH address:<br>
-        <input type="text" id="POneETH" value=""> <input type="button" id="POneETHbutton" onclick="ETHLockIn('POneETH')"
-            value="Lock In">
+        Player One's ETH address:
+        <input type="text" id="POneETH" value=""> 
+        Player One's bet (in Ether):
+        <input type="text" id="POneBet" value=""> 
+        <input type="button" id="POneETHbutton" onclick="ETHLockIn('POne')" value="Lock In">
         <br><br>
-        Player Two's ETH address:<br>
-        <input type="text" id="PTwoETH" value=""> <input type="button" id="PTwoETHbutton" onclick="ETHLockIn('PTwoETH')"
-            value="Lock In">
+        Player Two's ETH address:
+        <input type="text" id="PTwoETH" value="">
+        Player Two's bet (in Ether):
+        <input type="text" id="PTwoBet" value="">
+        <input type="button" id="PTwoETHbutton" onclick="ETHLockIn('PTwo')" value="Lock In">
         <br><br>
-        Player Three's ETH address:<br>
-        <input type="text" id="PThreeETH" value=""> <input type="button" id="PThreeETHbutton"
-            onclick="ETHLockIn('PThreeETH')" value="Lock In">
+        Player Three's ETH address:
+        <input type="text" id="PThreeETH" value="">
+        Player Three's bet (in Ether):
+        <input type="text" id="PThreeBet" value=""> 
+        <input type="button" id="PThreeETHbutton" onclick="ETHLockIn('PThree')" value="Lock In">
         <br><br>
-        Player Four's ETH address:<br>
-        <input type="text" id="PFourETH" value=""> <input type="button" id="PFourETHbutton"
-            onclick="ETHLockIn('PFourETH')" value="Lock In">
+        Player Four's ETH address:
+        <input type="text" id="PFourETH" value="">
+        Player Four's bet (in Ether):
+        <input type="text" id="PFourBet" value=""> 
+        <input type="button" id="PFourETHbutton" onclick="ETHLockIn('PFour')" value="Lock In">
+        <br><p id=basewarning></p>
     </div>
     <div id="game" style="display:none">
         <div style="height:120px;">

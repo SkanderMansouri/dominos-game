@@ -43,6 +43,18 @@ var POneETH = document.getElementById("POneETH");
 var PTwoETH = document.getElementById("PTwoETH");
 var PThreeETH = document.getElementById("PThreeETH");
 var PFourETH = document.getElementById("PFourETH");
+var basewarning = document.getElementById("basewarning");
+
+var POneAddress = "";
+var PTwoAddress = "";
+var PThreeAddress = "";
+var PFourAddress = "";
+
+var POneBet = 0;
+var PTwoBet = 0;
+var PThreeBet = 0;
+var PFourBet = 0;
+
 
 var playersAddress = [];
 var abi = JSON.parse("[{\"constant\":true,\"inputs\":[{\"name\":\"\",\"type\":\"uint256\"}],\"name\":\"moves\",\"outputs\":[{\"name\":\"player\",\"type\":\"address\"},{\"name\":\"tile\",\"type\":\"string\"},{\"name\":\"side\",\"type\":\"string\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[],\"name\":\"gameOver\",\"outputs\":[{\"name\":\"\",\"type\":\"bool\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[{\"name\":\"\",\"type\":\"uint256\"}],\"name\":\"players\",\"outputs\":[{\"name\":\"player\",\"type\":\"address\"},{\"name\":\"handHash\",\"type\":\"string\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"payable\":true,\"stateMutability\":\"payable\",\"type\":\"constructor\"},{\"anonymous\":false,\"inputs\":[],\"name\":\"GameStarted\",\"type\":\"event\"},{\"constant\":false,\"inputs\":[{\"name\":\"player2Addr\",\"type\":\"address\"},{\"name\":\"player3Addr\",\"type\":\"address\"},{\"name\":\"player4Addr\",\"type\":\"address\"},{\"name\":\"player1HandHash\",\"type\":\"string\"},{\"name\":\"player2HandHash\",\"type\":\"string\"},{\"name\":\"player3HandHash\",\"type\":\"string\"},{\"name\":\"player4HandHash\",\"type\":\"string\"}],\"name\":\"join\",\"outputs\":[{\"name\":\"\",\"type\":\"address\"}],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"playerAddr\",\"type\":\"address\"},{\"name\":\"tile\",\"type\":\"string\"},{\"name\":\"side\",\"type\":\"string\"}],\"name\":\"savingMove\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"}]");
@@ -56,10 +68,37 @@ function init() {
 }
 
 function ETHLockIn(player) {
-    var content = document.getElementById(player).value;
-    if (content.length > 0) {
-        document.getElementById(player).disabled = true;
+    var address = document.getElementById(player.concat('ETH')).value;
+    var bet = Number(document.getElementById(player.concat('Bet')).value);
+    if(Number.isNaN(bet) || bet <= 0){
+        basewarning.innerHTML = player + ": Invalid Bet.";
     }
+    if (address.length <= 0){
+        basewarning.innerHTML = player + ": Invalid Address.";
+    }
+
+    if (address.length > 0 && bet != 'NaN' && bet > 0) {
+        document.getElementById(player.concat('ETH')).disabled = true;
+        document.getElementById(player.concat('Bet')).disabled = true;
+        if(player == 'POne'){
+            POneAddress = address;
+            POneBet = bet;
+        }
+        else if(player == 'PTwo'){
+            PTwoAddress = address;
+            PTwoBet = bet;
+        }
+        else if(player == 'PThree'){
+            PThreeAddress = address;
+            PThreeBet = bet;
+        }
+        else if(player == 'PFour'){
+            PFourAddress = address;
+            PFourBet = bet;
+        }
+        basewarning.innerHTML = "";
+    }
+
     if (POneETH.disabled && PTwoETH.disabled && PThreeETH.disabled && PFourETH.disabled) {
         document.getElementById('accountprompt').style.display = 'none';
         document.getElementById('accountlist').innerHTML = "Player One's account:<br>" + POneETH.value + "<br><br>Player Two's account:<br>" + PTwoETH.value + "<br><br>Player Three's account:<br>" + PThreeETH.value + "<br><br>Player Four's account:<br>" + PFourETH.value;
@@ -67,6 +106,7 @@ function ETHLockIn(player) {
         playersAddress = [POneETH.value, PTwoETH.value, PThreeETH.value, PFourETH.value];
         startGame();
     }
+    
 }
 
 
@@ -180,6 +220,7 @@ function makeFreshDeck() {
         while (xIndex <= 6) {
             basetiles.push({
                 tile: "" + yIndex + xIndex,
+                original_tile: "" + yIndex + xIndex,
                 x_coord: jagIndex * tileWidth,
                 y_coord: yIndex * tileHeight,
                 double: xIndex === yIndex,
