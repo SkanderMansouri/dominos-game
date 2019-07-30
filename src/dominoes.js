@@ -57,6 +57,7 @@ var PFourBet = 0;
 
 
 var playersAddress = [];
+var playersBet = [];
 var abi = JSON.parse("[{\"constant\":true,\"inputs\":[{\"name\":\"\",\"type\":\"uint256\"}],\"name\":\"moves\",\"outputs\":[{\"name\":\"player\",\"type\":\"address\"},{\"name\":\"tile\",\"type\":\"string\"},{\"name\":\"side\",\"type\":\"string\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[],\"name\":\"gameOver\",\"outputs\":[{\"name\":\"\",\"type\":\"bool\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[{\"name\":\"\",\"type\":\"uint256\"}],\"name\":\"players\",\"outputs\":[{\"name\":\"player\",\"type\":\"address\"},{\"name\":\"handHash\",\"type\":\"string\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"payable\":true,\"stateMutability\":\"payable\",\"type\":\"constructor\"},{\"anonymous\":false,\"inputs\":[],\"name\":\"GameStarted\",\"type\":\"event\"},{\"constant\":false,\"inputs\":[{\"name\":\"player2Addr\",\"type\":\"address\"},{\"name\":\"player3Addr\",\"type\":\"address\"},{\"name\":\"player4Addr\",\"type\":\"address\"},{\"name\":\"player1HandHash\",\"type\":\"string\"},{\"name\":\"player2HandHash\",\"type\":\"string\"},{\"name\":\"player3HandHash\",\"type\":\"string\"},{\"name\":\"player4HandHash\",\"type\":\"string\"}],\"name\":\"join\",\"outputs\":[{\"name\":\"\",\"type\":\"address\"}],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"playerAddr\",\"type\":\"address\"},{\"name\":\"tile\",\"type\":\"string\"},{\"name\":\"side\",\"type\":\"string\"}],\"name\":\"savingMove\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"}]");
 var contract;
 var web3;
@@ -70,29 +71,26 @@ function init() {
 function ETHLockIn(player) {
     var address = document.getElementById(player.concat('ETH')).value;
     var bet = Number(document.getElementById(player.concat('Bet')).value);
-    if(Number.isNaN(bet) || bet <= 0){
+    if (Number.isNaN(bet) || bet <= 0) {
         basewarning.innerHTML = player + ": Invalid Bet.";
     }
-    if (address.length <= 0){
+    if (address.length <= 0) {
         basewarning.innerHTML = player + ": Invalid Address.";
     }
 
     if (address.length > 0 && bet != 'NaN' && bet > 0) {
         document.getElementById(player.concat('ETH')).disabled = true;
         document.getElementById(player.concat('Bet')).disabled = true;
-        if(player == 'POne'){
+        if (player == 'POne') {
             POneAddress = address;
             POneBet = bet;
-        }
-        else if(player == 'PTwo'){
+        } else if (player == 'PTwo') {
             PTwoAddress = address;
             PTwoBet = bet;
-        }
-        else if(player == 'PThree'){
+        } else if (player == 'PThree') {
             PThreeAddress = address;
             PThreeBet = bet;
-        }
-        else if(player == 'PFour'){
+        } else if (player == 'PFour') {
             PFourAddress = address;
             PFourBet = bet;
         }
@@ -103,10 +101,11 @@ function ETHLockIn(player) {
         document.getElementById('accountprompt').style.display = 'none';
         document.getElementById('accountlist').innerHTML = "Player One's account:<br>" + POneETH.value + "<br><br>Player Two's account:<br>" + PTwoETH.value + "<br><br>Player Three's account:<br>" + PThreeETH.value + "<br><br>Player Four's account:<br>" + PFourETH.value;
         document.getElementById('game').style.display = 'inline';
-        playersAddress = [POneETH.value, PTwoETH.value, PThreeETH.value, PFourETH.value];
+        playersAddress = [POneAddress.value, PTwoAddress.value, PThreeAddress.value, PFourAddress.value];
+        playersBet = [POneBet.value, PTwoBet.value, PThreeBet.value, PFourBet.value];
         startGame();
     }
-    
+
 }
 
 
@@ -128,7 +127,8 @@ function saveGameInBlockchain() {
         hashedTiles.push(hashedTile);
     }
     contract.methods.join(playersAddress[1], playersAddress[2], playersAddress[3], hashedTiles[0]
-        , hashedTiles[1], hashedTiles[2], hashedTiles[3]).send({
+        , hashedTiles[1], hashedTiles[2], hashedTiles[3], playersBet[0], playersBet[1], playersBet[2]
+        , playersBet[3]).send({
         from: playersAddress[0],
         gas: '500000'
     });
@@ -167,7 +167,7 @@ function setupNewRound() {
     scoreprompt.innerHTML = "<br>The Scoreboard <br><br>Team One: " + teamOneScore + " <br>Team Two: " + teamTwoScore;
 }
 
-function saveMoveInTheBlockchain(player,tile,side) {
+function saveMoveInTheBlockchain(player, tile, side) {
     console.log(player);
     console.log(tile);
     console.log(side);
@@ -176,6 +176,7 @@ function saveMoveInTheBlockchain(player,tile,side) {
         gas: '500000'
     });
 }
+
 function findPlayerWithDoubleSix() {
     var player = 0;
     var index = 0;
@@ -185,7 +186,7 @@ function findPlayerWithDoubleSix() {
     while (player < 4 && index < gamestate[player].length) {
         if (gamestate[player][index].tile == "66") {
             found = true;
-            saveMoveInTheBlockchain(playersAddress[player],"66","left");
+            saveMoveInTheBlockchain(playersAddress[player], "66", "left");
             break;
         }
         if (index === gamestate[player].length - 1) {
@@ -356,7 +357,7 @@ function playTileHelper(index, playside) {
         logprompt.innerHTML += "<br>Turn " + turn + ": Player " + currentPlayer + " plays the " + gamestate[currentPlayer - 1][index].tile + " on the left.";
         logprompt.scrollTop = logprompt.scrollHeight;
     }
-    saveMoveInTheBlockchain(playersAddress[currentPlayer-1],gamestate[currentPlayer - 1][index].tile,playside);
+    saveMoveInTheBlockchain(playersAddress[currentPlayer - 1], gamestate[currentPlayer - 1][index].tile, playside);
     gamestate[currentPlayer - 1].splice(index, 1);
     drawBoard();
     drawHand(gamestate[currentPlayer - 1]);
