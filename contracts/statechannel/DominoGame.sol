@@ -9,6 +9,14 @@ contract DominoGame {
         string side;
     }
 
+    struct GameState {
+        uint8 seq;
+        uint8 num;
+        address whoseTurn;
+    }
+
+    GameState public state;
+
     struct player{
         address player;
         string handHash;
@@ -36,9 +44,14 @@ contract DominoGame {
         return(msg.sender);
     }
 
-    function savingMove(address playerAddr, string memory tile, string memory side) public {
-        moves.push(move(playerAddr, tile, side));
+    function moveFromState(uint8 seq, uint8 num) public {
+            require(seq >= state.seq, "Sequence number cannot go backwards.");
+
+            state.seq = seq;
+            state.num =+ num;
+            state.whoseTurn = msg.sender;
     }
+
 
     function transferMoneyToWinners(address payable winner1Addr, address payable winner2Addr) public {
         require(gameOver == true);

@@ -15,8 +15,6 @@ contract DominoGame {
         uint betAmount;
     }
 
-
-
     player[] public players;
     move[] public moves;
 
