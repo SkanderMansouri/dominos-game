@@ -357,7 +357,7 @@ function playTileHelper(index, playside) {
         logprompt.innerHTML += "<br>Turn " + turn + ": Player " + currentPlayer + " plays the " + gamestate[currentPlayer - 1][index].tile + " on the left.";
         logprompt.scrollTop = logprompt.scrollHeight;
     }
-    saveMoveInTheBlockchain(playersAddress[currentPlayer - 1], gamestate[currentPlayer - 1][index].tile, playside);
+    saveMoveInTheBlockchain(playersAddress[currentPlayer - 1], gamestate[currentPlayer - 1][index].original_tile, playside);
     gamestate[currentPlayer - 1].splice(index, 1);
     drawBoard();
     drawHand(gamestate[currentPlayer - 1]);
